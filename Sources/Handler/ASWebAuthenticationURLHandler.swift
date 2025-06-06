@@ -37,7 +37,9 @@ open class ASWebAuthenticationURLHandler: OAuthSwiftURLHandlerType {
                     let urlString = "\(self.callbackUrlScheme):?error=\(msg ?? "UNKNOWN")&error_domain=\(errorDomain)&error_code=\(errorCode)"
                     let url = URL(string: urlString)!
                     #if !OAUTH_APP_EXTENSIONS
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    if !self.callbackUrlScheme.lowercased().contains("http") {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
                     #endif
                 } else if let successURL = callback {
                     #if !OAUTH_APP_EXTENSIONS
